@@ -24,6 +24,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun CalcView() {
     val displayText = remember { mutableStateOf("0") }
+    val operation = remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -32,35 +33,31 @@ fun CalcView() {
             .padding(16.dp)
     ) {
         CalcDisplay(display = displayText)
-        CalcRow(display = displayText, startNum = 7, numButtons = 3)
-    }
-}
-
-@Composable
-fun CalcRow(display: MutableState<String>, startNum: Int, numButtons: Int) {
-    val endNum = startNum + numButtons
-    Row {
-        for (num in startNum until endNum) {
-            CalcNumericButton(number = num, display = display)
+        Row {
+            CalcNumericButton(number = 0, display = displayText)
+            CalcEqualsButton(display = displayText, operation = operation)
         }
     }
 }
 
 @Composable
-fun CalcDisplay(display: MutableState<String>) {
-    Text(
-        text = display.value,
-        modifier = Modifier
-            .background(Color.White)
-            .padding(16.dp)
-    )
-}
-
-@Composable
-fun CalcNumericButton(number: Int, display: MutableState<String>) {
+fun CalcEqualsButton(display: MutableState<String>, operation: MutableState<String>) {
     Button(
-        onClick = { display.value = if (display.value == "0") number.toString() else display.value + number.toString() }
+        onClick = {
+            val parts = display.value.split(operation.value)
+            if (parts.size == 2) {
+                val result = when (operation.value) {
+                    "+" -> parts[0].toDouble() + parts[1].toDouble()
+                    "-" -> parts[0].toDouble() - parts[1].toDouble()
+                    "*" -> parts[0].toDouble() * parts[1].toDouble()
+                    "/" -> parts[0].toDouble() / parts[1].toDouble()
+                    else -> 0.0
+                }
+                display.value = result.toString()
+                operation.value = ""
+            }
+        }
     ) {
-        Text(text = number.toString())
+        Text(text = "=")
     }
 }
