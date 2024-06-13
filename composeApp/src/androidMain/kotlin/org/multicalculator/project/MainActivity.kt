@@ -32,7 +32,10 @@ fun CalcView() {
             .padding(16.dp)
     ) {
         CalcDisplay(display = displayText)
-        CalcNumericButton(number = 0, display = displayText)
+        Row {
+            CalcNumericButton(number = 0, display = displayText)
+            CalcOperationButton(operation = "+", display = displayText)
+        }
     }
 }
 
@@ -52,5 +55,14 @@ fun CalcNumericButton(number: Int, display: MutableState<String>) {
         onClick = { display.value = if (display.value == "0") number.toString() else display.value + number.toString() }
     ) {
         Text(text = number.toString())
+    }
+}
+
+@Composable
+fun CalcOperationButton(operation: String, display: MutableState<String>) {
+    Button(
+        onClick = { display.value += operation }
+    ) {
+        Text(text = operation)
     }
 }
