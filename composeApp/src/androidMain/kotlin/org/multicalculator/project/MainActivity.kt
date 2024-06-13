@@ -32,9 +32,16 @@ fun CalcView() {
             .padding(16.dp)
     ) {
         CalcDisplay(display = displayText)
-        Row {
-            CalcNumericButton(number = 0, display = displayText)
-            CalcOperationButton(operation = "+", display = displayText)
+        CalcRow(display = displayText, startNum = 7, numButtons = 3)
+    }
+}
+
+@Composable
+fun CalcRow(display: MutableState<String>, startNum: Int, numButtons: Int) {
+    val endNum = startNum + numButtons
+    Row {
+        for (num in startNum until endNum) {
+            CalcNumericButton(number = num, display = display)
         }
     }
 }
@@ -55,14 +62,5 @@ fun CalcNumericButton(number: Int, display: MutableState<String>) {
         onClick = { display.value = if (display.value == "0") number.toString() else display.value + number.toString() }
     ) {
         Text(text = number.toString())
-    }
-}
-
-@Composable
-fun CalcOperationButton(operation: String, display: MutableState<String>) {
-    Button(
-        onClick = { display.value += operation }
-    ) {
-        Text(text = operation)
     }
 }
