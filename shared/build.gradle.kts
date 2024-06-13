@@ -27,7 +27,7 @@ kotlin {
     
     sourceSets {
         commonMain.dependencies {
-            implementation(kotlin("stdlib-common"))
+           // implementation(kotlin("stdlib-common"))
             // put your Multiplatform dependencies here
         }
     }
