@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -31,6 +32,7 @@ fun CalcView() {
             .padding(16.dp)
     ) {
         CalcDisplay(display = displayText)
+        CalcNumericButton(number = 0, display = displayText)
     }
 }
 
@@ -42,4 +44,13 @@ fun CalcDisplay(display: MutableState<String>) {
             .background(Color.White)
             .padding(16.dp)
     )
+}
+
+@Composable
+fun CalcNumericButton(number: Int, display: MutableState<String>) {
+    Button(
+        onClick = { display.value = if (display.value == "0") number.toString() else display.value + number.toString() }
+    ) {
+        Text(text = number.toString())
+    }
 }
