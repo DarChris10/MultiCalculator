@@ -9,6 +9,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -32,12 +33,13 @@ fun CalcView() {
     var operation by rememberSaveable { mutableStateOf("") }
     var complete by rememberSaveable { mutableStateOf(false) }
 
-
     Column(
         modifier = Modifier
             .background(Color.LightGray)
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(10.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (complete && operation != "") {
             var answer = 0
@@ -83,17 +85,26 @@ fun CalcView() {
 
         CalcDisplay(display = displayText)
 
-        Row(modifier = Modifier.padding(vertical = 16.dp)) {
-            Column {
+        Row(
+            modifier = Modifier.padding(top = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 for (i in 7 downTo 1 step 3) {
                     CalcRow(onPress = { numberPress(it) }, startNum = i, numButtons = 3)
                 }
-                Row {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
                     CalcNumericButton(number = 0, onPress = { numberPress(it) })
                     CalcEqualsButton(onPress = { equalsPress() })
                 }
             }
-            Column(modifier = Modifier.padding(start = 16.dp)) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 val operations = listOf("+", "-", "*", "/")
                 operations.forEach { op ->
                     CalcOperationButton(operation = op, onPress = { operationPress(it) })
@@ -106,7 +117,10 @@ fun CalcView() {
 @Composable
 fun CalcRow(onPress: (number: Int) -> Unit, startNum: Int, numButtons: Int) {
     val endNum = startNum + numButtons
-    Row(modifier = Modifier.padding(0.dp)) {
+    Row(
+        modifier = Modifier.padding(0.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         for (num in startNum until endNum) {
             CalcNumericButton(number = num, onPress = onPress)
         }
@@ -130,7 +144,7 @@ fun CalcNumericButton(number: Int, onPress: (number: Int) -> Unit) {
     Button(
         onClick = { onPress(number) },
         modifier = Modifier
-            .padding(4.dp)
+            .padding(0.dp)
             .size(80.dp)
     ) {
         Text(text = number.toString(), fontSize = 24.sp)
@@ -142,7 +156,7 @@ fun CalcOperationButton(operation: String, onPress: (operation: String) -> Unit)
     Button(
         onClick = { onPress(operation) },
         modifier = Modifier
-            .padding(4.dp)
+            .padding(0.dp)
             .size(80.dp)
     ) {
         Text(text = operation, fontSize = 24.sp)
@@ -154,7 +168,7 @@ fun CalcEqualsButton(onPress: () -> Unit) {
     Button(
         onClick = { onPress() },
         modifier = Modifier
-            .padding(4.dp)
+            .padding(0.dp)
             .size(80.dp)
     ) {
         Text(text = "=", fontSize = 24.sp)
