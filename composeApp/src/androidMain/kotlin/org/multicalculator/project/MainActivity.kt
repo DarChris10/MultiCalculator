@@ -8,11 +8,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+<<<<<<< HEAD
+=======
+import androidx.compose.runtime.saveable.rememberSaveable
+>>>>>>> fbee656 (variables adding)
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+<<<<<<< HEAD
 import androidx.compose.ui.tooling.preview.Preview
+=======
+>>>>>>> fbee656 (variables adding)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +33,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun CalcView() {
     val displayText = remember { mutableStateOf("0") }
+<<<<<<< HEAD
     val operation = remember { mutableStateOf("") }
 
     Column(
@@ -34,26 +42,48 @@ fun CalcView() {
             .fillMaxSize()
             .padding(16.dp)
     ) {
+=======
+
+    var leftNumber by rememberSaveable { mutableStateOf(0) }
+    var rightNumber by rememberSaveable { mutableStateOf(0) }
+    var operation by rememberSaveable { mutableStateOf("") }
+    var complete by rememberSaveable { mutableStateOf(false) }
+
+
+>>>>>>> fbee656 (variables adding)
         CalcDisplay(display = displayText)
 
         Row(modifier = Modifier.padding(top = 16.dp)) {
             Column {
                 for (i in 7 downTo 1 step 3) {
+<<<<<<< HEAD
                     CalcRow(display = displayText, startNum = i, numButtons = 3)
                 }
                 Row {
                     CalcNumericButton(number = 0, display = displayText)
                     CalcEqualsButton(display = displayText, operation = operation)
+=======
+                    CalcRow(onPress = { numberPress(it) }, startNum = i, numButtons = 3)
+                }
+                Row {
+                    CalcNumericButton(number = 0, onPress = { numberPress(it) })
+                    CalcEqualsButton(onPress = { equalsPress() }, operation = operation)
+>>>>>>> fbee656 (variables adding)
                 }
             }
             Column(modifier = Modifier.padding(start = 16.dp)) {
                 val operations = listOf("+", "-", "*", "/")
                 operations.forEach { operation ->
+<<<<<<< HEAD
                     CalcOperationButton(operation = operation, display = displayText)
+=======
+                    CalcOperationButton(operation = operation, onPress = { operationPress(it) })
+>>>>>>> fbee656 (variables adding)
                 }
             }
         }
     }
+<<<<<<< HEAD
 }
 
 @Composable
@@ -66,6 +96,19 @@ fun CalcRow(display: MutableState<String>, startNum: Int, numButtons: Int) {
     }
 }
 
+=======
+
+}
+@Composable
+fun CalcRow(onPress: (number: Int) -> Unit, startNum: Int, numButtons: Int) {
+    val endNum = startNum + numButtons
+    Row(modifier = Modifier.padding(0.dp)) {
+        for (num in startNum until endNum) {
+            CalcNumericButton(number = num, onPress = onPress)
+        }
+    }
+}
+>>>>>>> fbee656 (variables adding)
 @Composable
 fun CalcDisplay(display: MutableState<String>) {
     Text(
@@ -77,6 +120,7 @@ fun CalcDisplay(display: MutableState<String>) {
             .padding(5.dp)
     )
 }
+<<<<<<< HEAD
 
 @Composable
 fun CalcNumericButton(number: Int, display: MutableState<String>) {
@@ -92,11 +136,28 @@ fun CalcNumericButton(number: Int, display: MutableState<String>) {
 fun CalcOperationButton(operation: String, display: MutableState<String>) {
     Button(
         onClick = { display.value += operation },
+=======
+@Composable
+fun CalcNumericButton(number: Int, onPress: (number: Int) -> Unit) {
+    Button(
+        onClick = { onPress(number)  },
+        modifier = Modifier.padding(4.dp)
+    ) {
+        Text(text = number.toString())
+
+    }
+}
+@Composable
+fun CalcOperationButton(operation: String, onPress: (operation: String) -> Unit) {
+    Button(
+        onClick = { onPress(operation) },
+>>>>>>> fbee656 (variables adding)
         modifier = Modifier.padding(4.dp)
     ) {
         Text(text = operation)
     }
 }
+<<<<<<< HEAD
 
 @Composable
 fun CalcEqualsButton(display: MutableState<String>, operation: MutableState<String>) {
@@ -120,3 +181,15 @@ fun CalcEqualsButton(display: MutableState<String>, operation: MutableState<Stri
         Text(text = "=")
     }
 }
+=======
+@Composable
+fun CalcEqualsButton(onPress: ()-> Unit, operation: String) {
+    Button(
+        onClick = { onPress() },
+        modifier = Modifier.padding(4.dp)
+
+    ) {
+        Text(text = "=")
+    }
+}
+>>>>>>> fbee656 (variables adding)
