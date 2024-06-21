@@ -39,7 +39,6 @@ fun CalcView() {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        val displayText = remember { mutableStateOf("0") }
         if (complete && operation != "") {
             var answer = 0
             when (operation) {
@@ -48,7 +47,6 @@ fun CalcView() {
                 "*" -> answer = leftNumber * rightNumber
                 "/" -> if (rightNumber != 0) {
                     answer = leftNumber / rightNumber
-                } else {
                 }
             }
             displayText.value = answer.toString()
@@ -82,28 +80,29 @@ fun CalcView() {
         fun equalsPress() {
             complete = true
         }
+
         CalcDisplay(display = displayText)
 
-        Row(modifier = Modifier.padding(top = 16.dp)) {
+        Row(modifier = Modifier.padding(vertical = 16.dp)) {
             Column {
                 for (i in 7 downTo 1 step 3) {
                     CalcRow(onPress = { numberPress(it) }, startNum = i, numButtons = 3)
                 }
                 Row {
                     CalcNumericButton(number = 0, onPress = { numberPress(it) })
-                    CalcEqualsButton(onPress = { equalsPress() }, operation = operation)
+                    CalcEqualsButton(onPress = { equalsPress() })
                 }
             }
             Column(modifier = Modifier.padding(start = 16.dp)) {
                 val operations = listOf("+", "-", "*", "/")
-                operations.forEach { operation ->
-                    CalcOperationButton(operation = operation, onPress = { operationPress(it) })
+                operations.forEach { op ->
+                    CalcOperationButton(operation = op, onPress = { operationPress(it) })
                 }
             }
         }
     }
-
 }
+
 @Composable
 fun CalcRow(onPress: (number: Int) -> Unit, startNum: Int, numButtons: Int) {
     val endNum = startNum + numButtons
@@ -113,6 +112,7 @@ fun CalcRow(onPress: (number: Int) -> Unit, startNum: Int, numButtons: Int) {
         }
     }
 }
+
 @Composable
 fun CalcDisplay(display: MutableState<String>) {
     Text(
@@ -124,32 +124,39 @@ fun CalcDisplay(display: MutableState<String>) {
             .padding(5.dp)
     )
 }
+
 @Composable
 fun CalcNumericButton(number: Int, onPress: (number: Int) -> Unit) {
     Button(
-        onClick = { onPress(number)  },
-        modifier = Modifier.padding(4.dp)
+        onClick = { onPress(number) },
+        modifier = Modifier
+            .padding(4.dp)
+            .size(80.dp)
     ) {
-        Text(text = number.toString())
-
+        Text(text = number.toString(), fontSize = 24.sp)
     }
 }
+
 @Composable
 fun CalcOperationButton(operation: String, onPress: (operation: String) -> Unit) {
     Button(
         onClick = { onPress(operation) },
-        modifier = Modifier.padding(4.dp)
+        modifier = Modifier
+            .padding(4.dp)
+            .size(80.dp)
     ) {
-        Text(text = operation)
+        Text(text = operation, fontSize = 24.sp)
     }
 }
+
 @Composable
-fun CalcEqualsButton(onPress: ()-> Unit, operation: String) {
+fun CalcEqualsButton(onPress: () -> Unit) {
     Button(
         onClick = { onPress() },
-        modifier = Modifier.padding(4.dp)
-
+        modifier = Modifier
+            .padding(4.dp)
+            .size(80.dp)
     ) {
-        Text(text = "=")
+        Text(text = "=", fontSize = 24.sp)
     }
 }
